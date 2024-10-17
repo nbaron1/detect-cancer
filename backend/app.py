@@ -9,10 +9,26 @@ import os
 from flask_cors import CORS
 from flask import Flask, request, current_app
 from werkzeug.utils import secure_filename
+import tempfile
+import gdown
+
 
 def load_model():
-    loaded_model = bentoml.pytorch.load_model("skin_lesion_classifier:latest")
-    return loaded_model
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.pth') as temp_file:
+        temp_path = temp_file.name
+
+        model = models.resnet18(pretrained=True)
+        num_ftrs = model.fc.in_features
+        model.fc = nn.Linear(num_ftrs, 4)
+
+        # Download the model from Google Drive
+        file_id = '1--vYcqyH-WSJl52gd-8NHFBq7l-VxM7C'
+        url = f'https://drive.google.com/uc?id={file_id}'
+        gdown.download(url, temp_path, quiet=False)
+
+        model.load_state_dict(torch.load(temp_path))
+   
+        return model
 
 transform = transforms.Compose([
     transforms.RandomResizedCrop(128, scale=(0.35, 1.0)),
@@ -42,12 +58,6 @@ loaded_model = load_model()
 app = Flask(__name__)
 CORS(app) 
 
-
-prediction = predict(loaded_model, "../images/ISIC_0085644.jpg")
-print(f"Prediction: {prediction}")
-  
-
-
 @app.route('/predict', methods=['POST'])
 def predictRoute():
     print('Request received')
@@ -68,6 +78,11 @@ def predictRoute():
     print(f"Prediction: {prediction}")
     
     return {'success': True, 'data': {'prediction': prediction}}
+
+@app.route('/health', methods=['GET'])
+def health():
+    return 'OK', 200
+
 
 if __name__ == '__main__':
     app.run(debug=True)
