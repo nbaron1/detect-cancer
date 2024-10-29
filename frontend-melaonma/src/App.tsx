@@ -290,7 +290,7 @@ function App() {
 
       try {
         setIsLoading(true);
-        const endpoint = `${config.backendURL}/predict`;
+        const endpoint = `${config.backendURL}/predict/melanoma`;
 
         const response = await fetch(endpoint, {
           method: 'POST',
