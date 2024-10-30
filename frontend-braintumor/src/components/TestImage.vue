@@ -33,7 +33,7 @@ const handleTestModel = () => {
         class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-stone-100 px-6 py-6 rounded-xl w-[90vw] shadow-sm flex flex-col gap-4"
       >
         <div class="flex justify-between items-center">
-          <p class="text-lg font-bold">Test the model</p>
+          <p class="text-lg font-semibold">Test the model</p>
           <DialogClose>
             <svg
               width="24"
