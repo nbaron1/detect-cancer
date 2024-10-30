@@ -133,7 +133,18 @@ async def predict(image: UploadFile = File(...)):
             detail=str(e)
         )
 
-@app.post('/predict/brain-tumor')
+
+class ImagesResponse(BaseModel):
+    images: list[str]
+
+@app.get('/brain-tumor/imagefs')
+async def getImages():
+    images = []
+
+    return ImagesResponse
+
+    
+@app.post('/brain-tumor/predict')
 async def predict(image: UploadFile = File(...)):
     if not image.content_type.startswith('image/'):
         raise HTTPException(
@@ -184,7 +195,7 @@ async def predict_url(image_data: ImageURL):
         
         # Get prediction
         with torch.no_grad():
-            outputs = model(image_tensor)
+            outputs = melanoma_model(image_tensor)
             probabilities = torch.nn.functional.softmax(outputs, dim=1)
             
         pred_label_idx = torch.argmax(probabilities, dim=1).item()

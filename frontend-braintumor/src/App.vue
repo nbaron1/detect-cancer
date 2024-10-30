@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useTemplateRef, ref, computed } from 'vue'
 import { config } from './config'
+import TestImage from './components/TestImage.vue'
 
 const inputRef = useTemplateRef('file-input')
 
@@ -52,6 +53,24 @@ const label = computed(() => {
 
   return null
 })
+
+const images = [
+  {
+    src: 'https://cdn.pixabay.com/photo/2014/06/03/19/38/board-361516_640.jpg',
+  },
+  {
+    src: 'https://cdn.pixabay.com/photo/2014/06/03/19/38/board-361516_640.jpg',
+  },
+  {
+    src: 'https://cdn.pixabay.com/photo/2014/06/03/19/38/board-361516_640.jpg',
+  },
+  {
+    src: 'https://cdn.pixabay.com/photo/2014/06/03/19/38/board-361516_640.jpg',
+  },
+  {
+    src: 'https://cdn.pixabay.com/photo/2014/06/03/19/38/board-361516_640.jpg',
+  },
+]
 </script>
 
 <template>
@@ -84,10 +103,10 @@ const label = computed(() => {
       Upload image
     </button>
   </div>
-  <div class="flex flex-col items-center py-7 px-4 mt-4 mb-0">
+  <div class="flex flex-col py-7 px-7 mt-4 mb-0">
     <div class="flex flex-col gap-4">
-      <h1 class="text-3xl text-center">Test a random image</h1>
-      <p class="text-center">
+      <h1 class="text-3xl text-left">Test a random image</h1>
+      <p class="text-left">
         Click an x-ray below to test the model. These images have never been
         seen by the model and are randomized. The AI model predicts the
         classification correctly on 75% of images.
@@ -97,21 +116,12 @@ const label = computed(() => {
       Randomize Images
     </button>
     <div class="flex flex-col gap-2 mt-8">
-      <div
-        class="flex flex-col aspect-square w-[300px] bg-gray-200 rounded-xl"
-      ></div>
-      <div
-        class="flex flex-col aspect-square w-[300px] bg-gray-200 rounded-xl"
-      ></div>
-      <div
-        class="flex flex-col aspect-square w-[300px] bg-gray-200 rounded-xl"
-      ></div>
-      <div
-        class="flex flex-col aspect-square w-[300px] bg-gray-200 rounded-xl"
-      ></div>
+      <TestImage v-for="image in images" :src="image.src" :key="image.src" />
     </div>
     <div class="mt-6 mb-2 flex flex-col gap-3">
-      <p>*calculated by testing on 1,000 images never seen during training</p>
+      <p class="text-gray-800">
+        *calculated by testing on 1,000 images never seen during training
+      </p>
       <div>
         <div class="flex justify-between">
           <svg
@@ -126,7 +136,7 @@ const label = computed(() => {
               fill="black"
             />
           </svg>
-          <p>built by nbaron</p>
+          <p class="text-gray-800">built by nbaron</p>
         </div>
       </div>
     </div>
