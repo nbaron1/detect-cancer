@@ -31,12 +31,12 @@ const handleTestModel = () => {
         class="fixed top-0 left-0 right-0 bottom-0 bg-black opacity-20"
       />
       <DialogContent
-        class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-stone-100 px-6 py-6 rounded-xl w-[90vw] shadow-sm flex flex-col gap-6"
+        class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-stone-100 px-6 py-8 rounded-xl w-[90vw] sm:max-w-[400px] shadow-sm flex flex-col gap-6"
       >
         <div class="flex justify-between items-center">
-          <DialogTitle class="text-lg font-semibold"
-            >Test the model</DialogTitle
-          >
+          <DialogTitle class="text-lg font-semibold sm:text-xl">
+            Test the model
+          </DialogTitle>
           <DialogClose>
             <svg
               width="24"

@@ -75,11 +75,11 @@ const images = [
 
 <template>
   <div class="header-section flex py-24 flex-col items-start px-6">
-    <div class="flex flex-col gap-2">
-      <h1 class="text-left text-3xl">
+    <div class="flex flex-col gap-2 mx-auto">
+      <h1 class="text-left text-3xl sm:text-center">
         Detect Brain Tumors from Using AI with 70% Accuracy*
       </h1>
-      <p class="text-left text-lg text-[#4D4D4D]">
+      <p class="text-left text-lg text-[#4D4D4D] sm:text-center">
         Trained on the
         <a
           href="https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset"
@@ -98,24 +98,26 @@ const images = [
     />
     <button
       @click="uploadImage"
-      class="button w-56 rounded-full mt-5 bg-gray-900 text-white h-12"
+      class="button w-56 sm:mx-auto rounded-full mt-5 bg-gray-900 text-white h-12"
     >
       Upload image
     </button>
   </div>
   <div class="flex flex-col py-7 px-7 mt-4 mb-0">
     <div class="flex flex-col gap-4">
-      <h1 class="text-3xl text-left">Test a random image</h1>
-      <p class="text-left">
+      <h1 class="text-3xl text-left sm:text-center">Test a random image</h1>
+      <p class="text-left sm:text-center max-w-[600px] sm:mx-auto">
         Click an x-ray below to test the model. These images have never been
         seen by the model and are randomized. The AI model predicts the
         classification correctly on 75% of images.
       </p>
     </div>
-    <button class="button w-56 rounded-full mt-5 bg-gray-900 text-white h-12">
+    <button
+      class="button w-56 rounded-full mt-5 bg-gray-900 text-white h-12 sm:mx-auto"
+    >
       Randomize Images
     </button>
-    <div class="flex flex-col gap-2 mt-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 mt-8">
       <TestImage v-for="image in images" :src="image.src" :key="image.src" />
     </div>
     <div class="mt-6 mb-2 flex flex-col gap-3">
@@ -136,7 +138,9 @@ const images = [
               fill="black"
             />
           </svg>
-          <p class="text-gray-800">built by nbaron</p>
+          <a class="text-gray-800" href="https://nbaron.com/" target="_blank"
+            >built by nbaron</a
+          >
         </div>
       </div>
     </div>
