@@ -5,6 +5,7 @@ import {
   DialogOverlay,
   DialogPortal,
   DialogRoot,
+  DialogTitle,
   DialogTrigger,
 } from 'radix-vue'
 import { ref } from 'vue'
@@ -30,10 +31,12 @@ const handleTestModel = () => {
         class="fixed top-0 left-0 right-0 bottom-0 bg-black opacity-20"
       />
       <DialogContent
-        class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-stone-100 px-6 py-6 rounded-xl w-[90vw] shadow-sm flex flex-col gap-4"
+        class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-stone-100 px-6 py-6 rounded-xl w-[90vw] shadow-sm flex flex-col gap-6"
       >
         <div class="flex justify-between items-center">
-          <p class="text-lg font-semibold">Test the model</p>
+          <DialogTitle class="text-lg font-semibold"
+            >Test the model</DialogTitle
+          >
           <DialogClose>
             <svg
               width="24"
@@ -61,14 +64,14 @@ const handleTestModel = () => {
             <p class="font-medium">Prediction:</p>
             <div
               v-if="prediction === null"
-              class="bg-stone-200 w-20 h-6 animate-pulse rounded-md"
+              class="bg-stone-200 w-28 h-6 animate-pulse rounded-md"
             ></div>
             <p v-if="prediction !== null">
               {{ prediction }}
             </p>
           </div>
         </div>
-        <img class="w-full aspect-square rounded-lg bg-stone-300" />
+        <img :src="src" class="w-full aspect-square rounded-lg bg-stone-300" />
         <button
           class="button rounded-lg bg-gray-900 text-white h-12 outline-none"
           @click="handleTestModel"

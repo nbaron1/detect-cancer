@@ -17,7 +17,7 @@ const handleChange = async (event: Event) => {
   formData.append('image', file)
 
   try {
-    const endpoint = `${config.backendURL}/predict/brain-tumor`
+    const endpoint = `${config.backendURL}/brain-tumor/predict`
 
     const response = await fetch(endpoint, {
       method: 'POST',
