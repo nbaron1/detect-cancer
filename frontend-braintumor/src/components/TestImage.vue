@@ -9,6 +9,7 @@ import {
   DialogTrigger,
 } from 'radix-vue'
 import { ref } from 'vue'
+import { config } from '../config'
 
 const { file } = defineProps<{
   file: string
@@ -17,9 +18,27 @@ const { file } = defineProps<{
 const prediction = ref<null | string>(null)
 const confidence = ref<null | number>(null)
 
-const handleMakePrediction = () => {
-  prediction.value = 'hello'
-  confidence.value = 0.5
+const predictionError = ref<boolean>()
+
+const handleMakePrediction = async (url: string) => {
+  try {
+    console.log(src)
+
+    await fetch(`${config.backendURL}/brain-tumor/predict-url`, {
+      method: 'POST',
+      body: JSON.stringify({
+        url,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    confidence.value = 0.5
+    predictionError.value = false
+  } catch {
+    predictionError.value = true
+  }
 }
 
 const src = `https://www.brain-tumor-static.nbaron.com/${file}`
@@ -36,7 +55,7 @@ const src = `https://www.brain-tumor-static.nbaron.com/${file}`
       />
       <DialogContent
         aria-describedby="undefined"
-        class="fixed top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 bg-stone-100 px-8 py-8 rounded-xl w-[90vw] sm:max-w-[400px] shadow-sm flex flex-col gap-6"
+        class="fixed top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 bg-stone-100 px-8 py-8 rounded-2xl w-[90vw] sm:max-w-[400px] shadow-sm flex flex-col gap-6"
       >
         <div class="flex justify-between items-center">
           <DialogTitle class="text-xl font-semibold sm:text-xl">
@@ -89,7 +108,7 @@ const src = `https://www.brain-tumor-static.nbaron.com/${file}`
         <img :src="src" class="w-full aspect-square rounded-lg bg-stone-300" />
         <button
           class="button rounded-lg bg-gray-900 text-white h-12 outline-none"
-          @click="handleMakePrediction"
+          @click="handleMakePrediction(src)"
         >
           Make prediction
         </button>

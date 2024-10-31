@@ -15,9 +15,9 @@ from io import BytesIO
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000"
+    "http://localhost:3000",
     "https://detect-brain-cancer.nbaron.com",
-    "https://detect-.nbaron.com",
+    "https://detect-skin-cancer.nbaron.com",
 ]
 
 app.add_middleware(
@@ -37,6 +37,7 @@ def load_melanoma_model():
     print("Load melanoma model")
 
     global melanoma_model, melanoma_transform
+
     # Load model architecture
     weights = ResNet50_Weights.DEFAULT
     melanoma_model = resnet50(weights=weights)
@@ -212,22 +213,6 @@ async def predict_url(image_data: ImageURL):
             detail=f"Error processing image: {str(e)}"
         )
 
-
-
-class Image(BaseModel):
-    src: str
-    label: str
-
-class ImagesResponse(BaseModel):
-    images: list[Image]
-
-
-@app.get('/brain-tumor/images')
-async def getImages():
-    random_images = sample(images, 12)
-
-    return ImagesResponse(images=random_images)
-
 @app.post('/brain-tumor/predict')
 async def predict(image: UploadFile = File(...)):
     if not image.content_type.startswith('image/'):
@@ -259,4 +244,41 @@ async def predict(image: UploadFile = File(...)):
         raise HTTPException(
             status_code=500,
             detail=str(e)
+        )
+
+@app.post('/brain-tumor/predict-url')
+async def predictBrainTumorURL(image_data: ImageURL):
+    try:
+        response = requests.get(image_data.url, timeout=10)
+        response.raise_for_status()
+
+        image = Image.open(io.BytesIO(response.content)).convert('RGB')
+
+        image_tensor = brain_tumor_transform(image).unsqueeze(0).to(device)
+        
+        with torch.no_grad():
+            outputs = brain_tumor_model(image_tensor)
+            probabilities = torch.nn.functional.softmax(outputs, dim=1)
+            
+        pred_label_idx = torch.argmax(probabilities, dim=1).item()
+        
+        return PredictionResponse(
+            classification=pred_label_idx,
+            confidence=probabilities[0][pred_label_idx].item(),
+            success=True
+        )
+
+    except requests.RequestException:
+        raise HTTPException(
+            status_code=400,
+            detail="Could not download image from URL"
+        )
+    
+    except Exception as e:
+        import traceback
+        print(f"Error: {traceback.format_exc()}")
+
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error processing image: {str(e)}"
         )
