@@ -17,8 +17,9 @@ const { file } = defineProps<{
 const prediction = ref<null | string>(null)
 const confidence = ref<null | number>(null)
 
-const handleTestModel = () => {
-  prediction.value = 'Not a tumor'
+const handleMakePrediction = () => {
+  prediction.value = 'hello'
+  confidence.value = 0.5
 }
 
 const src = `https://www.brain-tumor-static.nbaron.com/${file}`
@@ -80,7 +81,7 @@ const src = `https://www.brain-tumor-static.nbaron.com/${file}`
                 Click "Make prediction"
               </p>
               <p v-else>
-                {{ confidence }}
+                {{ `${(confidence * 100).toFixed(0)}%` }}
               </p>
             </div>
           </div>
@@ -88,7 +89,7 @@ const src = `https://www.brain-tumor-static.nbaron.com/${file}`
         <img :src="src" class="w-full aspect-square rounded-lg bg-stone-300" />
         <button
           class="button rounded-lg bg-gray-900 text-white h-12 outline-none"
-          @click="handleTestModel"
+          @click="handleMakePrediction"
         >
           Make prediction
         </button>
