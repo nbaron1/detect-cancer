@@ -72,7 +72,7 @@ getImages()
   <div class="header-section flex py-24 flex-col items-start px-6">
     <div class="flex flex-col gap-4 mx-auto">
       <h1
-        class="text-left text-4xl md:text-5xl leading-normal sm:text-center md:max-w-[700px]"
+        class="text-left text-4xl md:text-5xl leading-loose sm:text-center md:max-w-[700px]"
       >
         Detect Brain Tumors from Using AI with 70% Accuracy*
       </h1>
