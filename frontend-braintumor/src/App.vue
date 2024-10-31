@@ -58,7 +58,10 @@ const label = computed(() => {
 const images = ref<Images | null>(null)
 
 const getImages = () => {
-  const imagesValues = RANDOM_IMAGES.slice(0, 12)
+  const imagesValues = RANDOM_IMAGES.sort(() => Math.random() - 0.5).slice(
+    0,
+    12,
+  )
   images.value = imagesValues
 }
 
@@ -111,15 +114,16 @@ getImages()
     </div>
     <button
       class="button w-56 rounded-full mt-5 bg-gray-900 text-white h-12 sm:mx-auto"
+      @click="getImages"
     >
       Randomize Images
     </button>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 mt-8">
-      <TestImage v-for="image in images" :src="image.src" :key="image.src" />
+      <TestImage v-for="image in images" :file="image.file" :key="image.file" />
     </div>
     <div class="mt-6 mb-2 flex flex-col gap-3">
       <p class="text-gray-600">
-        *calculated by testing on 1,000 images never seen during training
+        *accuracy calculated using 1,000 images not seen during testing
       </p>
       <div>
         <div class="flex justify-between">

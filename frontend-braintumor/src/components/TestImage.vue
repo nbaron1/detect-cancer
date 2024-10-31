@@ -10,8 +10,8 @@ import {
 } from 'radix-vue'
 import { ref } from 'vue'
 
-defineProps<{
-  src: string
+const { file } = defineProps<{
+  file: string
 }>()
 
 const prediction = ref<null | string>(null)
@@ -19,6 +19,8 @@ const prediction = ref<null | string>(null)
 const handleTestModel = () => {
   prediction.value = 'Not a tumor'
 }
+
+const src = `https://www.brain-tumor-static.nbaron.com/${file}`
 </script>
 
 <template>
