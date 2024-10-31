@@ -9,10 +9,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, File, UploadFile
 from pydantic import BaseModel
 from typing import Optional
+from random import sample
 
 app = FastAPI()
 
-origins = ["*"]
+origins = [
+    "http://localhost:3000"
+    "https://detect-brain-cancer.nbaron.com",
+    "https://detect-.nbaron.com",
+    ]
 
 app.add_middleware(
     CORSMiddleware,
@@ -26,8 +31,6 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 melanoma_model = None
 melanoma_transform = None
-
-
 
 # todo: process .webp images
 def load_melanoma_model():
@@ -100,7 +103,7 @@ class ErrorResponse(BaseModel):
     error: str
     success: bool = False
  
-@app.post('/predict/melanoma')
+@app.post('/melanoma/predict')
 async def predict(image: UploadFile = File(...)):
     if not image.content_type.startswith('image/'):
         raise HTTPException(
@@ -132,55 +135,12 @@ async def predict(image: UploadFile = File(...)):
             status_code=500,
             detail=str(e)
         )
-
-
-class ImagesResponse(BaseModel):
-    images: list[str]
-
-@app.get('/brain-tumor/imagefs')
-async def getImages():
-    images = []
-
-    return ImagesResponse
-
     
-@app.post('/brain-tumor/predict')
-async def predict(image: UploadFile = File(...)):
-    if not image.content_type.startswith('image/'):
-        raise HTTPException(
-            status_code=400,
-            detail="File uploaded is not an image"
-        )
-    
-    try:
-        image_bytes = await image.read()
-        image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
-
-        image_tensor = brain_tumor_transform(image).to(device)
-
-        with torch.no_grad():
-            outputs = brain_tumor_model(image_tensor.unsqueeze(0))
-            probabilities = torch.nn.functional.softmax(outputs, dim=1)
-
-        pred_label_idx = torch.argmax(probabilities, dim=1).item()    
-            
-        return PredictionResponse(
-            classification=pred_label_idx,
-            confidence=float(probabilities[0][pred_label_idx].item()),
-            success=True
-        )
-
-    except Exception as e:
-        print(e)
-        raise HTTPException(
-            status_code=500,
-            detail=str(e)
-        )
 
 class ImageURL(BaseModel):
     url: str       
 
-@app.post('/predict-url')
+@app.post('/melanoma/predict-url')
 async def predict_url(image_data: ImageURL):
     try:
         # Download image from URL
@@ -215,4 +175,53 @@ async def predict_url(image_data: ImageURL):
         raise HTTPException(
             status_code=500,
             detail=f"Error processing image: {str(e)}"
+        )
+
+
+
+class Image(BaseModel):
+    src: str
+    label: str
+
+class ImagesResponse(BaseModel):
+    images: list[Image]
+
+
+@app.get('/brain-tumor/images')
+async def getImages():
+    random_images = sample(images, 12)
+
+    return ImagesResponse(images=random_images)
+
+@app.post('/brain-tumor/predict')
+async def predict(image: UploadFile = File(...)):
+    if not image.content_type.startswith('image/'):
+        raise HTTPException(
+            status_code=400,
+            detail="File uploaded is not an image"
+        )
+    
+    try:
+        image_bytes = await image.read()
+        image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
+
+        image_tensor = brain_tumor_transform(image).to(device)
+
+        with torch.no_grad():
+            outputs = brain_tumor_model(image_tensor.unsqueeze(0))
+            probabilities = torch.nn.functional.softmax(outputs, dim=1)
+
+        pred_label_idx = torch.argmax(probabilities, dim=1).item()    
+            
+        return PredictionResponse(
+            classification=pred_label_idx,
+            confidence=float(probabilities[0][pred_label_idx].item()),
+            success=True
+        )
+
+    except Exception as e:
+        print(e)
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
         )

@@ -31,6 +31,7 @@ const handleTestModel = () => {
         class="fixed top-0 left-0 right-0 bottom-0 bg-black opacity-20"
       />
       <DialogContent
+        aria-describedby="undefined"
         class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-stone-100 px-6 py-8 rounded-xl w-[90vw] sm:max-w-[400px] shadow-sm flex flex-col gap-6"
       >
         <div class="flex justify-between items-center">
