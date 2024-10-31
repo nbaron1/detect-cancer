@@ -15,6 +15,7 @@ const { file } = defineProps<{
 }>()
 
 const prediction = ref<null | string>(null)
+const confidence = ref<null | number>(null)
 
 const handleTestModel = () => {
   prediction.value = 'Not a tumor'
@@ -58,19 +59,30 @@ const src = `https://www.brain-tumor-static.nbaron.com/${file}`
             </svg>
           </DialogClose>
         </div>
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-4">
           <div class="flex gap-1 items-center">
             <p class="font-medium">Label:</p>
             <p>Not a tumor</p>
           </div>
-          <div class="flex gap-1 items-center">
-            <p class="font-medium">Prediction:</p>
-            <p v-if="prediction === null" class="font-medium">
-              Click "Make prediction"
-            </p>
-            <p v-else>
-              {{ prediction }}
-            </p>
+          <div class="flex flex-col gap-2">
+            <div class="flex gap-1 items-center">
+              <p class="font-medium">Prediction:</p>
+              <p v-if="prediction === null" class="font-medium">
+                Click "Make prediction"
+              </p>
+              <p v-else>
+                {{ prediction }}
+              </p>
+            </div>
+            <div class="flex gap-1 items-center">
+              <p class="font-medium">Confidence:</p>
+              <p v-if="confidence === null" class="font-medium">
+                Click "Make prediction"
+              </p>
+              <p v-else>
+                {{ confidence }}
+              </p>
+            </div>
           </div>
         </div>
         <img :src="src" class="w-full aspect-square rounded-lg bg-stone-300" />
