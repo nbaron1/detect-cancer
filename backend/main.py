@@ -18,7 +18,7 @@ origins = [
     "http://localhost:3000"
     "https://detect-brain-cancer.nbaron.com",
     "https://detect-.nbaron.com",
-    ]
+]
 
 app.add_middleware(
     CORSMiddleware,
