@@ -32,10 +32,10 @@ const handleTestModel = () => {
       />
       <DialogContent
         aria-describedby="undefined"
-        class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-stone-100 px-6 py-8 rounded-xl w-[90vw] sm:max-w-[400px] shadow-sm flex flex-col gap-6"
+        class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-stone-100 px-8 py-8 rounded-xl w-[90vw] sm:max-w-[400px] shadow-sm flex flex-col gap-6"
       >
         <div class="flex justify-between items-center">
-          <DialogTitle class="text-lg font-semibold sm:text-xl">
+          <DialogTitle class="text-xl font-semibold sm:text-xl">
             Test the model
           </DialogTitle>
           <DialogClose>
@@ -63,9 +63,10 @@ const handleTestModel = () => {
           </div>
           <div class="flex gap-1 items-center">
             <p class="font-medium">Prediction:</p>
-            <p class="font-medium">Click "Make prediction"</p>
-
-            <p v-if="prediction !== null">
+            <p v-if="prediction === null" class="font-medium">
+              Click "Make prediction"
+            </p>
+            <p v-else>
               {{ prediction }}
             </p>
           </div>
