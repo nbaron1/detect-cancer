@@ -10,6 +10,7 @@ from fastapi import FastAPI, File, UploadFile
 from pydantic import BaseModel
 from typing import Optional
 from random import sample
+from io import BytesIO
 
 app = FastAPI()
 
@@ -32,10 +33,10 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 melanoma_model = None
 melanoma_transform = None
 
-# todo: process .webp images
 def load_melanoma_model():
+    print("Load melanoma model")
+
     global melanoma_model, melanoma_transform
-    
     # Load model architecture
     weights = ResNet50_Weights.DEFAULT
     melanoma_model = resnet50(weights=weights)
@@ -46,48 +47,82 @@ def load_melanoma_model():
         
     # Replace final layer
     melanoma_model.fc = torch.nn.Linear(2048, 4)
+
+    model_url = "https://www.brain-tumor-static.nbaron.com/detect-skin-cancer.pth"
     
-    melanoma_model.load_state_dict(torch.load('./models/100k-images.pth', map_location=torch.device('cpu'), weights_only=True))
+    try:
+        response = requests.get(model_url)
+        response.raise_for_status()
+        
+        weights_buffer = BytesIO(response.content)
+        state_dict = torch.load(weights_buffer, map_location=torch.device('cpu'), weights_only=True)
+        melanoma_model.load_state_dict(state_dict, strict=True)
+        
+    except requests.exceptions.RequestException as e:
+        raise Exception(f"Failed to download model weights: {str(e)}")
+    except Exception as e:
+        raise Exception(f"Failed to load model weights: {str(e)}")
+    
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     melanoma_model.to(device)
     melanoma_model.eval()
     
     melanoma_transform = weights.transforms()
-
+    print("Melanoma model loaded")
 
 brain_tumor_model = None
 brain_tumor_transform = None
 
 def load_braintumor_model():
     global brain_tumor_model, brain_tumor_transform
+    print("Loading braintumor model")
 
     weights = ResNet50_Weights.DEFAULT
-    brain_tumor_model = resnet50(weights=weights).to(device)
-
-    for param in brain_tumor_model.parameters():
-        param.requires_grad = False
-
-    # Unfreeze the last residual block
-    for param in brain_tumor_model.layer4.parameters():
-        param.requires_grad = True
-
-    # Replace classifier with a more robust head
-    brain_tumor_model.fc = torch.nn.Sequential(
-        torch.nn.Linear(2048, 512),
-        torch.nn.ReLU(),
-        torch.nn.Dropout(0.4),
-        torch.nn.Linear(512, 4)
-    ).to(device)
+    model = resnet50(weights=weights)
     
-    brain_tumor_transform = transforms.Compose([
-        transforms.Resize(256),  # Resize to slightly larger dimension
-        transforms.CenterCrop(224),  # Crop center to match training size
+    num_classes = 4
+        
+    model.fc = torch.nn.Sequential(
+            torch.nn.Linear(2048, 512),
+            torch.nn.ReLU(),
+            torch.nn.Dropout(0.2),
+            torch.nn.Linear(512, num_classes)
+        )
+        
+    weights_url = "https://www.brain-tumor-static.nbaron.com/best-brain-cancer.pth"
+        
+    try:
+        response = requests.get(weights_url)
+        response.raise_for_status()
+        
+        weights_buffer = BytesIO(response.content)
+        state_dict = torch.load(weights_buffer, map_location=torch.device('cpu'), weights_only=True)
+        model.load_state_dict(state_dict['model_state_dict'], strict=True)
+        
+    except requests.exceptions.RequestException as e:
+        raise Exception(f"Failed to download model weights: {str(e)}")
+    except Exception as e:
+        raise Exception(f"Failed to load model weights: {str(e)}")
+    
+    # Prepare model for inference
+    model = model.to(device)
+    model.eval()
+    
+    # Set up preprocessing transform
+    transform = transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
         transforms.ToTensor(),
-        weights.transforms()
-    ])
+        weights.transforms(),
+    ])  
+
+    brain_tumor_model = model
+    brain_tumor_transform = transform
+    print("Braintumor model loaded")
 
 
-load_melanoma_model()
 load_braintumor_model()
+load_melanoma_model()
 
 @app.get('/health')
 def health():
