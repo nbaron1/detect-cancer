@@ -63,10 +63,8 @@ const handleTestModel = () => {
           </div>
           <div class="flex gap-1 items-center">
             <p class="font-medium">Prediction:</p>
-            <div
-              v-if="prediction === null"
-              class="bg-stone-200 w-28 h-6 animate-pulse rounded-md"
-            ></div>
+            <p class="font-medium">Click "Make prediction"</p>
+
             <p v-if="prediction !== null">
               {{ prediction }}
             </p>
@@ -77,7 +75,7 @@ const handleTestModel = () => {
           class="button rounded-lg bg-gray-900 text-white h-12 outline-none"
           @click="handleTestModel"
         >
-          Test the model
+          Make prediction
         </button>
       </DialogContent>
     </DialogPortal>
