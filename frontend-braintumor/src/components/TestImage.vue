@@ -24,18 +24,29 @@ const handleMakePrediction = async (url: string) => {
   try {
     console.log(src)
 
-    await fetch(`${config.backendURL}/brain-tumor/predict-url`, {
-      method: 'POST',
-      body: JSON.stringify({
-        url,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      `${config.backendURL}/brain-tumor/predict-url`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          url,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       },
-    })
+    )
 
-    confidence.value = 0.5
-    predictionError.value = false
+    const data = await response.json()
+
+    console.log({ data })
+
+    if (!('success' in data) || !data.success) {
+      throw new Error('Missing valid success message')
+    }
+
+    confidence.value = data.predictionError.value
+    prediction.value = data.predictionError.classification
   } catch {
     predictionError.value = true
   }
