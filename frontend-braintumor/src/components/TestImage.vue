@@ -85,7 +85,7 @@ const src = `https://www.brain-tumor-static.nbaron.com/${file}`
       />
       <DialogContent
         aria-describedby="undefined"
-        class="fixed top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 bg-stone-100 px-8 py-8 rounded-2xl w-[90vw] sm:max-w-[400px] shadow-sm flex flex-col gap-6"
+        class="fixed top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 bg-stone-100 px-8 py-8 rounded-2xl max-h-[80vh] w-[90vw] sm:max-w-[400px] shadow-sm flex flex-col gap-6"
       >
         <div class="flex justify-between items-center">
           <DialogTitle class="text-xl font-semibold sm:text-xl">
@@ -135,7 +135,10 @@ const src = `https://www.brain-tumor-static.nbaron.com/${file}`
             </div>
           </div>
         </div>
-        <img :src="src" class="w-full aspect-square rounded-lg bg-stone-300" />
+        <img
+          :src="src"
+          class="aspect-square min-h-0 flex-shrink rounded-lg bg-stone-300"
+        />
         <button
           class="button rounded-lg bg-gray-900 text-white h-12 outline-none"
           @click="handleMakePrediction(src)"
