@@ -8,15 +8,32 @@ import {
   DialogTitle,
   DialogTrigger,
 } from 'radix-vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { config } from '../config'
 
 const { file } = defineProps<{
   file: string
 }>()
 
-const prediction = ref<null | string>(null)
+const prediction = ref<null | number>(null)
 const confidence = ref<null | number>(null)
+
+const predictionLabel = computed(() => {
+  if (prediction.value === null) return null
+
+  switch (prediction.value) {
+    case 0:
+      return 'Glioma'
+    case 1:
+      return 'Meningioma'
+    case 2:
+      return 'No tumor'
+    case 3:
+      return 'Pituitary'
+  }
+
+  return null
+})
 
 const predictionError = ref<boolean>()
 
@@ -42,12 +59,14 @@ const handleMakePrediction = async (url: string) => {
     console.log({ data })
 
     if (!('success' in data) || !data.success) {
-      throw new Error('Missing valid success message')
+      throw new Error('Missing valid success status')
     }
 
-    confidence.value = data.predictionError.value
-    prediction.value = data.predictionError.classification
-  } catch {
+    confidence.value = data.confidence
+
+    prediction.value = data.classification
+  } catch (error) {
+    console.log(`Error making prediction: ${error}`)
     predictionError.value = true
   }
 }
@@ -98,11 +117,11 @@ const src = `https://www.brain-tumor-static.nbaron.com/${file}`
           <div class="flex flex-col gap-2">
             <div class="flex gap-1 items-center">
               <p class="font-medium">Prediction:</p>
-              <p v-if="prediction === null" class="font-medium">
+              <p v-if="predictionLabel === null" class="font-medium">
                 Click "Make prediction"
               </p>
               <p v-else>
-                {{ prediction }}
+                {{ predictionLabel }}
               </p>
             </div>
             <div class="flex gap-1 items-center">
