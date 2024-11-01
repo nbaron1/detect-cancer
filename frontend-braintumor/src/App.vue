@@ -74,7 +74,7 @@ getImages()
       <h1
         class="text-left text-4xl md:text-5xl !leading-tight sm:text-center md:max-w-[700px]"
       >
-        Detect Brain Tumors From a MRI Using AI with 70% Accuracy*
+        Detect Brain Tumors From an MRI Using AI with 70% Accuracy*
       </h1>
       <p class="text-left text-lg text-[#4D4D4D] sm:text-center">
         Trained on the
