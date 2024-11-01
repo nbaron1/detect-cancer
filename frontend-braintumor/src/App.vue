@@ -74,7 +74,7 @@ getImages()
       <h1
         class="text-left text-4xl md:text-5xl !leading-tight sm:text-center md:max-w-[800px]"
       >
-        Detect Brain Tumors From an MRI Using AI with 70% Accuracy*
+        Detect Brain Tumors From an MRI Using AI with 79.25% Accuracy*
       </h1>
       <p class="text-left text-lg text-[#4D4D4D] sm:text-center">
         Trained on the
@@ -109,7 +109,7 @@ getImages()
       <p class="text-left sm:text-center max-w-[600px] sm:mx-auto">
         Click an x-ray below to test the model. These images have never been
         seen by the model and are randomized. The AI model predicts the
-        classification correctly on 75% of images.
+        classification correctly on 79.25% of images.
       </p>
     </div>
     <button
@@ -128,7 +128,7 @@ getImages()
     </div>
     <div class="mt-6 mb-2 flex flex-col gap-3">
       <p class="text-gray-600">
-        *accuracy calculated using 1,000 images not seen during testing
+        *accuracy calculated using 300 images not seen during testing
       </p>
       <div>
         <div class="flex justify-between">

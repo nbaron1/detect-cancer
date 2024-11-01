@@ -174,7 +174,7 @@ async def predict(image: UploadFile = File(...)):
     
 
 class ImageURL(BaseModel):
-    url: str       
+    url: str
 
 @app.post('/melanoma/predict-url')
 async def predict_url(image_data: ImageURL):
