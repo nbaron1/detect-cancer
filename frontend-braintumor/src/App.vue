@@ -119,7 +119,12 @@ getImages()
       Randomize Images
     </button>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 mt-8">
-      <TestImage v-for="image in images" :file="image.file" :key="image.file" />
+      <TestImage
+        v-for="image in images"
+        :correct-class="image.label"
+        :file="image.file"
+        :key="image.file"
+      />
     </div>
     <div class="mt-6 mb-2 flex flex-col gap-3">
       <p class="text-gray-600">

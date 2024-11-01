@@ -10,9 +10,11 @@ import {
 } from 'radix-vue'
 import { computed, ref } from 'vue'
 import { config } from '../config'
+import { getLabelFromClass } from '../getLabelFromClass'
 
-const { file } = defineProps<{
+const { file, correctClass } = defineProps<{
   file: string
+  correctClass: number
 }>()
 
 const prediction = ref<null | number>(null)
@@ -21,21 +23,12 @@ const confidence = ref<null | number>(null)
 const predictionLabel = computed(() => {
   if (prediction.value === null) return null
 
-  switch (prediction.value) {
-    case 0:
-      return 'Glioma'
-    case 1:
-      return 'Meningioma'
-    case 2:
-      return 'No tumor'
-    case 3:
-      return 'Pituitary'
-  }
-
-  return null
+  return getLabelFromClass(prediction.value)
 })
 
 const predictionError = ref<boolean>()
+
+const correctLabel = getLabelFromClass(correctClass)
 
 const handleMakePrediction = async (url: string) => {
   try {
@@ -112,7 +105,7 @@ const src = `https://www.brain-tumor-static.nbaron.com/${file}`
         <div class="flex flex-col gap-4">
           <div class="flex gap-1 items-center">
             <p class="font-medium">Label:</p>
-            <p>Not a tumor</p>
+            <p>{{ correctLabel }}</p>
           </div>
           <div class="flex flex-col gap-2">
             <div class="flex gap-1 items-center">
@@ -120,7 +113,7 @@ const src = `https://www.brain-tumor-static.nbaron.com/${file}`
               <p v-if="predictionLabel === null" class="font-medium">
                 Click "Make prediction"
               </p>
-              <p v-else>Prediction: {{ predictionLabel }}</p>
+              <p v-else>{{ predictionLabel }}</p>
             </div>
             <div class="flex gap-1 items-center">
               <p class="font-medium">Confidence:</p>
