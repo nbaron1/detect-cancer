@@ -172,13 +172,16 @@ function MelanomaSampleTest({ sampleCase }: { sampleCase: Case }) {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${config.backendURL}/predict-url`, {
-        method: 'POST',
-        body: JSON.stringify({ url: src }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await fetch(
+        `${config.backendURL}/melanoma/predict-url`,
+        {
+          method: 'POST',
+          body: JSON.stringify({ url: src }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
       const data = await response.json();
 
@@ -290,7 +293,7 @@ function App() {
 
       try {
         setIsLoading(true);
-        const endpoint = `${config.backendURL}/predict/melanoma`;
+        const endpoint = `${config.backendURL}/melanoma/predict`;
 
         const response = await fetch(endpoint, {
           method: 'POST',
@@ -373,7 +376,7 @@ function App() {
               {previewUrl && (
                 <img
                   src={previewUrl}
-                  className='rounded-lg w-full aspect-square'
+                  className='rounded-lg w-full aspect-square object-cover'
                 />
               )}
               <p className='text-white font-bold'>
