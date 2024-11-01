@@ -16,8 +16,8 @@ app = FastAPI()
 
 origins = [
     "http://localhost:3000",
-    "https://detect-brain-cancer.nbaron.com",
-    "https://detect-skin-cancer.nbaron.com",
+    "https://brain-tumor.nbaron.com",
+    "https://skin-cancer.nbaron.com",
 ]
 
 app.add_middleware(
