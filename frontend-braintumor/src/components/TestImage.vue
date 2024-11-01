@@ -120,9 +120,7 @@ const src = `https://www.brain-tumor-static.nbaron.com/${file}`
               <p v-if="predictionLabel === null" class="font-medium">
                 Click "Make prediction"
               </p>
-              <p v-else>
-                {{ predictionLabel }}
-              </p>
+              <p v-else>Prediction: {{ predictionLabel }}</p>
             </div>
             <div class="flex gap-1 items-center">
               <p class="font-medium">Confidence:</p>
