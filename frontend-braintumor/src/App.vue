@@ -129,7 +129,7 @@ getImages()
     </div>
     <div class="mt-6 mb-2 flex flex-col gap-3">
       <p class="text-gray-600">
-        *accuracy calculated using 300 images not seen during testing
+        *accuracy calculated using 300 images not seen during training
       </p>
       <div>
         <div class="flex justify-between">
