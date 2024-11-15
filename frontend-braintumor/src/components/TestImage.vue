@@ -81,9 +81,15 @@ const src = `https://www.brain-tumor-static.nbaron.com/${file}`
         class="fixed top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 bg-stone-100 px-8 py-8 rounded-2xl max-h-[80vh] w-[90vw] sm:max-w-[400px] shadow-sm flex flex-col gap-6"
       >
         <div class="flex justify-between items-center">
-          <DialogTitle class="text-xl font-semibold sm:text-xl">
-            Test the model
-          </DialogTitle>
+          <div class="flex flex-col gap-3">
+            <DialogTitle class="text-xl font-semibold sm:text-xl">
+              Test the model
+            </DialogTitle>
+            <p>
+              Currnetly the model is <strong>79.25%</strong> accurate.
+              Occasional mistakes are expected.
+            </p>
+          </div>
           <DialogClose>
             <svg
               width="24"

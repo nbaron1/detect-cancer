@@ -5,14 +5,16 @@ import TestImage from './components/TestImage.vue'
 import { RANDOM_IMAGES, type Images } from './constants'
 
 const inputRef = useTemplateRef('file-input')
-
 const classification = ref<null | 0 | 1 | 2 | 3>(null)
+const uploadedImageUrl = ref<null | string>(null)
 
 const handleChange = async (event: Event) => {
   const file = (event.target as HTMLInputElement).files?.[0]
   if (!file) return
 
   if (inputRef.value) inputRef.value.value = ''
+
+  uploadedImageUrl.value = URL.createObjectURL(file)
 
   const formData = new FormData()
   formData.append('image', file)
@@ -87,7 +89,17 @@ getImages()
         >
       </p>
     </div>
-    <p v-if="label !== null">{{ label }}</p>
+    <div class="flex gap-2 flex-col mt-6 mx-auto" v-if="label !== null">
+      <img
+        v-if="uploadedImageUrl !== null"
+        :src="uploadedImageUrl"
+        alt="Uploaded MRI Image"
+        class="h-80 w-auto rounded object-cover"
+      />
+      <p class="mx-auto text-xl text-black font-semibold">
+        Prediction: {{ label }}
+      </p>
+    </div>
     <input
       type="file"
       accept="image/*"
@@ -97,7 +109,7 @@ getImages()
     />
     <button
       @click="uploadImage"
-      class="button w-56 sm:mx-auto rounded-full mt-5 bg-gray-900 text-white h-12"
+      class="button w-full sm:w-56 md:w-80 sm:mx-auto rounded-full mt-5 bg-gray-900 text-white h-12"
     >
       Upload image
     </button>

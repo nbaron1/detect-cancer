@@ -149,6 +149,7 @@ async def predict(image: UploadFile = File(...)):
     
     try:
         image_bytes = await image.read()
+        
         image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
 
         image_tensor = melanoma_transform(image).unsqueeze(0).to(device)
