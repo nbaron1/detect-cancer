@@ -113,6 +113,12 @@ getImages()
     >
       Upload image
     </button>
+    <p
+      class="sm:text-center mx-auto mt-4 max-w-[500px] text-left text-[#4D4D4D]"
+    >
+      This is for educational purposes only and should not be used as a
+      substitute for professional medical care
+    </p>
   </div>
   <div class="flex flex-col pt-10 pb-4 px-7 mb-0">
     <div class="flex flex-col gap-4">
@@ -120,8 +126,8 @@ getImages()
         Test a random image
       </h1>
       <p class="text-left sm:text-center max-w-[600px] sm:mx-auto">
-        Click an x-ray below to test the model. These images have never been
-        seen by the model and are randomized. The AI model predicts the
+        Click a scan below to test the model. These images have never been seen
+        by the model and are randomized. The AI model predicts the
         classification correctly on 79.25% of images.
       </p>
     </div>

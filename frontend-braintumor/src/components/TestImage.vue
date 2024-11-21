@@ -116,17 +116,11 @@ const src = `https://www.brain-tumor-static.nbaron.com/${file}`
           <div class="flex flex-col gap-2">
             <div class="flex gap-1 items-center">
               <p class="font-medium">Prediction:</p>
-              <p v-if="predictionLabel === null" class="font-medium">
-                Click "Make prediction"
-              </p>
-              <p v-else>{{ predictionLabel }}</p>
+              <p v-if="predictionLabel !== null">{{ predictionLabel }}</p>
             </div>
             <div class="flex gap-1 items-center">
               <p class="font-medium">Confidence:</p>
-              <p v-if="confidence === null" class="font-medium">
-                Click "Make prediction"
-              </p>
-              <p v-else>
+              <p v-if="confidence !== null">
                 {{ `${(confidence * 100).toFixed(0)}%` }}
               </p>
             </div>
@@ -134,7 +128,7 @@ const src = `https://www.brain-tumor-static.nbaron.com/${file}`
         </div>
         <img
           :src="src"
-          class="aspect-square min-h-0 flex-shrink rounded-lg bg-stone-300"
+          class="aspect-square object-contain min-h-0 flex-shrink rounded-lg bg-stone-300"
         />
         <button
           class="button rounded-lg bg-gray-900 text-white h-12 outline-none"
