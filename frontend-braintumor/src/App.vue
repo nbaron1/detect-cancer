@@ -76,7 +76,7 @@ getImages()
       <h1
         class="text-left text-4xl md:text-5xl !leading-tight sm:text-center md:max-w-[800px]"
       >
-        Detect & Classify Brain Tumors From an MRI Using AI with 79.25%
+        Detect & Classify Brain Tumors From an MRI Scan Using AI with 79.25%
         Accuracy*
       </h1>
       <p class="text-left text-lg text-[#4D4D4D] sm:text-center">
@@ -147,7 +147,7 @@ getImages()
     </div>
     <div class="mt-6 mb-2 flex flex-col gap-3">
       <p class="text-gray-600">
-        *accuracy calculated using 300 images not seen during training
+        *the accuracy was calculated using 300 images not seen during training
       </p>
       <div>
         <div class="flex justify-between">
